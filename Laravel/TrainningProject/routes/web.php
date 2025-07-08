@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\testController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,3 +46,20 @@ Route::get('/DataMockup/{id}', [testController::class, 'TakeData']);
 
 // bladesyntax'
 Route::get('/bladesyntax', [testController::class, 'giveInfBlade']);
+
+//validate
+route::post('/validate', [testController::class, 'store']);
+
+
+//breeze
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
